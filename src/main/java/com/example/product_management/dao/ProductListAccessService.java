@@ -6,6 +6,7 @@ import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public class ProductListAccessService implements ProductDao {
@@ -35,4 +36,30 @@ public class ProductListAccessService implements ProductDao {
     }
 
 
+
+    @Override
+    public List<Product> getAllProduct() {
+        return products;
+    }
+
+
+    @Override
+    public void deleteProductByCode(String code) {
+        products.stream()
+                .filter(customer -> customer.getCode().equals(code))
+                .findFirst()
+                .ifPresent(products::remove);
+    }
+
+    @Override
+    public void updateProduct(Product product) {
+        products.add(product);
+    }
+
+    @Override
+    public Optional<Product> selectProductCode(String code) {
+        return products.stream()
+                .filter(product -> product.getCode().equals(code))
+                .findFirst();
+    }
 }
